@@ -23,6 +23,9 @@ CATEGORIES = []
 API_URL = ''
 
 OUTPUT_BASE = '/var/backups/wiki/'
+
+# The temporary output directory. This actually gets created and removed
+# within this script, so its name doesn't really matter.
 OUTPUT_DIR = 'out'
 
 
