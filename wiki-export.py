@@ -99,7 +99,7 @@ def archive_output(directory_name):
     fname = 'wiki-export-{}'.format(datetime.today().strftime('%Y-%m-%d'))
     shutil.rmtree(join(OUTPUT_BASE, fname), True)
     shutil.move(join(OUTPUT_BASE, directory_name), join(OUTPUT_BASE, fname))
-    shutil.make_archive(join(OUTPUT_BASE, fname), 'gztar', OUTPUT_BASE, fname)
+    shutil.make_archive(join(OUTPUT_BASE, fname), 'xztar', OUTPUT_BASE, fname)
 
 
 def main():
