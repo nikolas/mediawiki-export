@@ -30,7 +30,7 @@ OUTPUT_DIR = 'out'
 
 
 ns = {
-    'ns': 'http://www.mediawiki.org/xml/export-0.10/',
+    'ns': 'http://www.mediawiki.org/xml/export-0.11/',
 }
 
 
@@ -48,7 +48,11 @@ def export_pages(category, page_titles):
     url = '{}?{}'.format(API_URL, urlencode(args))
     r = requests.get(url)
 
-    root = ET.fromstring(r.text)
+    try:
+        root = ET.fromstring(r.text)
+    except ET.ParseError as e:
+        print('Error parsing category:', category)
+        return
 
     pages = root.findall('.//ns:page', ns)
     for page in pages:
