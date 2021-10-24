@@ -7,6 +7,7 @@
 # for more info.
 #
 
+import time
 from datetime import datetime
 import os
 from os.path import join
@@ -14,12 +15,12 @@ import requests
 import shutil
 from urllib.parse import urlencode
 import xml.etree.ElementTree as ET
+import json
 
 
 # The categories to export.
 CATEGORIES = []
 
-# Link to your MediaWiki's api.php
 API_URL = ''
 
 OUTPUT_BASE = '/var/backups/wiki/'
@@ -46,12 +47,17 @@ def export_pages(category, page_titles):
         'titles': '|'.join(page_titles),
     }
     url = '{}?{}'.format(API_URL, urlencode(args))
+    time.sleep(2)
     r = requests.get(url)
 
     try:
         root = ET.fromstring(r.text)
     except ET.ParseError as e:
-        print('Error parsing category:', category)
+        data = json.loads(r.text)
+        error_txt = 'Error parsing category:'
+        if data['error'] and data['error']['info']:
+            error_txt = data['error']['info']
+
         return
 
     pages = root.findall('.//ns:page', ns)
@@ -89,6 +95,7 @@ def export_category(category):
     }
     url = '{}?{}'.format(API_URL, urlencode(args))
 
+    time.sleep(2)
     r = requests.get(url)
     data = r.json()
 
